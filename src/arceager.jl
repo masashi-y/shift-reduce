@@ -261,7 +261,7 @@ function evaluate(ss::Vector{State})
         end
     end
     uas = float(num) / float(den)
-    @sprintf "UAS: %1.4f\n" uas
+    @printf "UAS: %1.4f\n" uas
 end
 
 global const ITERATION = 20

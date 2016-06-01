@@ -1,5 +1,6 @@
 
 using ProgressMeter
+include("stack.jl")
 include("utils.jl")
 include("tokens.jl")
 include("arceager.jl")
