@@ -265,8 +265,6 @@ function evaluate(ss::Vector{State})
 end
 
 global const ITERATION = 20
-global trainfile = "wsj_02-21.conll"
-global testfile = "wsj_23.conll"
 
 function main()
     info("LOADING SENTENCES")
