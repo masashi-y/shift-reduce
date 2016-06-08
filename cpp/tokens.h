@@ -6,7 +6,8 @@
 #include <sstream>
 #include <fstream>
 #include <vector>
-#include <map>
+#include <unordered_map>
+#include "utils.h"
 
 using namespace std;
 
@@ -30,9 +31,7 @@ struct Word
 void toConll(ostream& os, vector<Word>& sent);
 void toConll(vector<Word>& sent);
 
-int getOrAdd(map<string,int>& dict, string& key);
-
-vector<string> split(string& line, char delim);
+int getOrAdd(unordered_map<string,int>& dict, string& key);
 
 vector<vector<Word> > readConll(const string& file);
 

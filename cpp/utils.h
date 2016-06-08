@@ -2,22 +2,25 @@
 #define SHIFT_REDUCE_UTILS_
 
 #include <limits>
+#include <sstream>
 #include <initializer_list>
 #include <stdlib.h>
 #include <iostream>
-#include <stdarg.h>
+#include <vector>
 
 using namespace std;
 
-const double doubleMin = -100000000000.0;
+const double doubleMin = numeric_limits<double>::lowest();
 
-// int tohash(int len, initializer_list<int> arr);
-int tohash(int len, int e1=0, int e2=0, int e3=0, int e4=0, int e5=0);
+int tohash(int len, initializer_list<int> arr);
+int tohash(int len, int e1=-1, int e2=-1, int e3=-1, int e4=-1, int e5=-1);
+vector<string> split(string& line, char delim);
+
 
 template<typename T>
 int argmax(T* arr, int nActions) {
-    int maxi = 0; T maxv = doubleMin;
-    // cout << maxv << endl;
+    int maxi = 0;
+    T maxv = numeric_limits<T>::lowest();
     for (int i = 0; i < nActions; i++) {
         if (arr[i] >= maxv) {
             maxi = i;

@@ -3,12 +3,14 @@
 using namespace std;
 
 #define print(var) std::cout<<#var"= "<<var<<std::endl
-map<string,int> words;
-map<string,int> tags;
-map<string,int> labels;
-map<string,int> format;
+unordered_map<string,int> words;
+unordered_map<string,int> tags;
+unordered_map<string,int> labels;
+unordered_map<string,int> format;
 
-int getOrAdd(map<string,int>& dict, string& key) {
+string root = "root";
+
+int getOrAdd(unordered_map<string,int>& dict, string& key) {
     int id = dict[key];
     if (id == 0) {
         id = dict.size() + 1;
@@ -20,10 +22,7 @@ int getOrAdd(map<string,int>& dict, string& key) {
 Word::Word(string& _word, string& _pos, string& _head, string& _label) {
     init(_word, _pos, stoi(_head), _label);
 }
-Word::Word() {
-    string root = "root";
-    init(root, root, 0, root);
-}
+Word::Word() { init(root, root, 0, root); }
 
 Word::Word(vector<string>& line) {
     init(line[format["word"]],
@@ -57,21 +56,11 @@ string Word::toConll() {
 }
 
 void toConll(ostream& os, vector<Word>& sent) {
-    for (unsigned i = 1; i < sent.size(); i++) {
+    for (unsigned i = 1; i < sent.size(); i++)
         os << i << "\t" << sent[i].toConll() << endl;
-    }
     os << endl;
 }
-
-void toConll(vector<Word>& sent) {
-    toConll(cout, sent);
-}
-
-vector<string> split(string& line, char delim) {
-    istringstream iss(line); string tmp; vector<string> res;
-    while (getline(iss, tmp, delim)) res.push_back(tmp);
-    return res;
-}
+void toConll(vector<Word>& sent) { toConll(cout, sent); }
 
 vector<vector<Word> > readConll(const string& file) {
     initFormat();

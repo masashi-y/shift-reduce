@@ -5,15 +5,16 @@
 #include "tokens.h"
 #include "utils.h"
 
-#define INITEDGE() (sentSize+1)*maxdir*maxorder+maxdir*maxorder+maxorder
-#define T(...) feat[i]=tohash(dim, i++, __VA_ARGS__, -1000);
+#define INITEDGE() (sentSize+1)*MAXDIR*MAXORDER+MAXDIR*MAXORDER+MAXORDER
+#define T(...) feat[i]=tohash(dim, {i, __VA_ARGS__}); i++;
+// #define T(...) feat[i]=tohash(dim, i++, __VA_ARGS__);
 
 const int LeftArc  = 0;
 const int RightArc = 1;
 const int Shift    = 2;
 const int Reduce   = 3;
-const int NOACTION = -1;
 const int nActions = 4;
+const int NOACTION = -1;
 
 inline const string actionToString(int action) {
     return action == 0 ? "LeftArc" :
@@ -25,11 +26,11 @@ inline const string actionToString(int action) {
 const int L = 1;
 const int R = 2;
 const int H = 3;
-const int maxdir   = 3;
-const int maxorder = 2;
+const int MAXDIR   = 3;
+const int MAXORDER = 2;
 
 inline int context(int h, const int d, int o) {
-    return h * maxdir * maxorder + d * maxorder + o;
+    return h * MAXDIR * MAXORDER + d * MAXORDER + o;
 }
 
 
@@ -44,20 +45,31 @@ public:
     string to_string();
     int getStep() { return step; }
     double getScore() { return score; }
-    int** getFeat() { return &feat; }
+    int*& getFeat() { return feat; }
     int getPrevAct() { return prevact; }
     vector<Word>* getSent() { return sent; }
-    // void setPrevState(State* st) { prev = st; }
     int getFeatSize() { return featSize; }
     State* getPrevState() { return prev; }
-    State* transit(int action);
-    const int goldAction();
-    const int predAction();
+    State* transit(int action, double score);
+    double goldAction(int* action);
+    double predAction(int* action);
     void toConll(ostream& os);
     void toConll();
     State** toArray();
     int* heads();
     bool isFinal;
+    vector<State*> expandPred();
+    vector<State*> expandGold();
+    void registerState() {
+        stateBuffer[nStateBuffer] = this;
+        nStateBuffer++;
+    }
+    static void clearStates() {
+        for (int i = 0; i < nStateBuffer; i++)
+            delete stateBuffer[i];
+        nStateBuffer = 0;
+    }
+    Word& wordAt(int i) { return (*sent)[i]; }
 private:
     Word& indToWord(int i);
     void generateFeature();
@@ -71,12 +83,13 @@ private:
     int buffer;
     int* edges;
     vector<Word>* sent;
-    // Model model;
     State *prev;
     int prevact;
     int* feat;
     int sentSize;
     int featSize;
+    static State* stateBuffer[];
+    static int nStateBuffer;
 };
 
 
