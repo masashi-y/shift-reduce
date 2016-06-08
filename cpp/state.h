@@ -1,13 +1,22 @@
 #ifndef SHIFT_REDUCE_STATE_
 #define SHIFT_REDUCE_STATE_
 
+#define NODEBUG
 #include <string.h>
+#include <assert.h>
+#include <iomanip>
+#include <chrono>
+#include <algorithm>
+#include <utility>
 #include "tokens.h"
 #include "utils.h"
 
 #define INITEDGE() (sentSize+1)*MAXDIR*MAXORDER+MAXDIR*MAXORDER+MAXORDER
 #define T(...) feat[i]=tohash(dim, {i, __VA_ARGS__}); i++;
 // #define T(...) feat[i]=tohash(dim, i++, __VA_ARGS__);
+
+const int dim = 1 << 25;
+const int MAXFEATSIZE = 100;
 
 const int LeftArc  = 0;
 const int RightArc = 1;

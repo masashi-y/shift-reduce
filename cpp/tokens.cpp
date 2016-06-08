@@ -92,7 +92,7 @@ void initFormat() {
 
 int* getHeads(vector<Word>& sent) {
     int* res = new int[sent.size()];
-    for (int i = 0; i < sent.size(); i++) {
+    for (unsigned i = 0; i < sent.size(); i++) {
         res[i] = sent[i].head;
     }
     return res;
