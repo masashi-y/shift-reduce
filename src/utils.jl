@@ -4,7 +4,7 @@ macro template(arr...)
     nfeat = length(feat)
     res = :(Int[])
     for i = 1:nfeat
-        val = :( tohash(len, $(i), $(feat[i].args...)) )
+        val = :( tohash(len, $(i), $(feat[i].args...)); )
         push!(res.args, val)
     end
     res

@@ -1,5 +1,4 @@
 
-typealias String ASCIIString
 
 global words = Dict()
 global tags = Dict()
